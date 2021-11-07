@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int arr[] = {1,2,3,4,5,6,7,8,9};
+    int n =sizeof(arr)/sizeof(arr[0]);
+    int sum;
+    cin>>sum;
+    sort(arr,arr+n);
+    for(int i=n-1; i>0; i--)
+    {
+        for(int j = 0; j<i; j++)
+        {
+            if(arr[j] + arr[i]>sum)
+                break;
+            if(arr[j]+ arr[i] == sum)
+            {
+                cout<<"Sum pair exists: "<<arr[j]<<" + "<<arr[i];
+                exit(0);
+            }
+        }
+    }
+    cout<<"Sum pair does not exist.";
+    return 0;
+}

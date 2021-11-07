@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+using namespace std;
+int main()
+{
+    int a1[] = {1,2,5,7,8,10};
+    int a2[] = {2,3,4,5,10};
+    int n1 = sizeof(a1)/sizeof(a1[0]);
+    int n2 = sizeof(a2)/sizeof(a2[0]);
+    vector<int> v;
+    cout<<"Union: \n";
+    int i=0,j=0;
+    while(i<n1 && j<n2)
+    {
+        if(a1[i] < a2[j])
+        {
+            cout<<a1[i]<<" ";
+            i++;
+        }
+        else if(a2[j] < a1[i])
+        {
+            cout<<a2[j]<<" ";
+            j++;
+        }
+        else
+        {
+            cout<<a1[i]<<" ";
+            v.push_back(a1[i]);
+            i++;
+            j++;
+        }
+    }
+    for(; i<n1; i++)
+        cout<<a1[i]<<" ";
+    
+    for(; j<n2; j++)
+        cout<<a2[j]<<" ";
+        
+    cout<<"\nIntersection: \n";
+    for(int k = 0; k<v.size(); k++)
+        cout<<v[k]<<" ";
+        
+    return 0;
+}
