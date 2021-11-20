@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int arr[] = {1,2,3,4,5,5,4,3,2,1};
+    int n =sizeof(arr)/sizeof(arr[0]);
+    int left  = 0;
+    int right = 0;
+    for(int i = 0; i<n; i++)
+        right += arr[i];
+    
+    int flag = 0;
+    for(int i = 0; i<n-1; i++)
+    {
+        left += arr[i];
+        right -= arr[i];
+        if(right == left)
+        {
+            cout<<"Left sum = Right sum at index number: "<<i<<"\n";
+            flag = 1;
+        }
+    }
+    if(flag==0)
+        cout<<"Left sum != right sum at any point.\n";
+    return 0;
+}

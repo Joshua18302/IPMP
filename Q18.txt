@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int arr[] = {1,3,5,10,5,-6,8,4,13,-12};
+    int n =sizeof(arr)/sizeof(arr[0]);
+    sort(arr,arr+n);
+    int check = arr[n-1]*2;
+    int left = 0, right = n-1;
+    int index_1, index_2;
+    while(left<right)
+    {
+        int temp = arr[left] + arr[right];
+        if(abs(temp)<check)
+        {
+            check = abs(temp);
+            index_1 = left;
+            index_2 = right;
+        }
+        if(temp == 0)
+        {
+            cout<<arr[left]<<" + "<<arr[right];
+            exit(0);
+        }
+        else if (temp < 0)
+            left++;
+        else 
+            right--;
+    }
+    cout<<arr[index_1]<<" + "<<arr[index_2];
+    return 0;
+}
