@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+int main()
+{
+    int row = 5;
+    int col = 2;
+    float x = 12;
+    
+    float arr[row*(row+1)/2] = {0};
+    int glassno = 0;
+    arr[glassno] = x;
+    for(int i = 1; i<=row; i++)
+    {
+        for(int j=1; j<=i; j++,glassno++)
+        {
+            if(arr[glassno] > 1.0)
+            {
+                x = arr[glassno] ;
+                arr[glassno] = 1.0;
+                x--;
+                if(i!=row)
+                {
+                    arr[glassno + i] += x/2;
+                    arr[glassno + i + 1] += x/2;
+                }
+            }
+            
+        }
+    }
+    cout<<"Amount of water in the required cup is: "<<arr[row*(row+1)/2 - 1 - (row-col)];
+    return 0;
+}

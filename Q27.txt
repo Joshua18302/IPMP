@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+int main()
+{
+    int arr[] = {1,2,2,3,3,3,4,4,4,4,5,5,5,5,5};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    unordered_map<int,int> m;
+    unordered_map<int,int> rm;
+    int count = 0;
+    for(int i = 0; i<n; i++)
+    {
+        m[arr[i]]++;
+        if(m[arr[i]] == 1)
+            count++;
+    }
+    auto it = m.begin();
+    
+    int new_arr[count];
+    int i =0;
+    while(it!=m.end())
+    {
+        rm[it->second] = it->first;
+        new_arr[i] = it->second;
+        i++;
+        it++;
+    }
+    sort(new_arr,new_arr+count);
+
+    int index = n-1;
+    for(int i = 0; i<count; i++)
+    {
+        for(int j =0; j<new_arr[i]; j++)
+        {
+            arr[index] = rm[new_arr[i]];
+            index--;
+        }
+
+    }
+
+    for(int i = 0; i<n; i++)
+        cout<<arr[i]<<" ";
+    return 0;
+}
