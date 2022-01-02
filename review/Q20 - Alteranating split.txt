@@ -1,0 +1,97 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+struct node
+{  
+    int data;  
+    struct node *next;  
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void Add_Existing_Node(struct node** head, struct node** tail, struct node** temp) 
+{
+    if(*head == NULL) 
+    {  
+        *head = *temp;  
+        *tail = *temp; 
+    }  
+    else 
+    {  
+        (*tail)->next = *temp;  
+        *tail = *temp;  
+    }
+    
+}  
+
+void display(struct node* head) 
+{  
+    struct node *temp = head;  
+      
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+void Alternating_Split(struct node* head)
+{
+    struct node* temp = head;
+    struct node* a = NULL;
+    struct node* b = NULL;
+    struct node* a_tail = NULL;
+    struct node* b_tail = NULL;
+    int counter = 0;
+    while(temp!=NULL)
+    {
+        if(counter%2 == 0)
+            Add_Existing_Node(&a, &a_tail, &temp);
+
+        else
+            Add_Existing_Node(&b, &b_tail, &temp);
+        
+        counter++;    
+        temp = temp->next;
+    }
+    a_tail->next = NULL;
+    b_tail->next = NULL;
+    cout<<"a - ";
+    display(a);
+    cout<<"b - ";
+    display(b);
+}
+
+int main()
+{
+    struct node *head1 = NULL;
+    struct node *tail1 = NULL;
+    for(int i = 0; i<10; i++)
+        addNode(&head1, &tail1, rand()%2);
+    
+    cout<<"Initally:\n";
+    display(head1);
+    cout<<"After splitting:\n";
+    Alternating_Split(head1);
+    return 0;
+}

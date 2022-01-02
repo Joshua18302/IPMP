@@ -1,0 +1,109 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+#include <deque>
+using namespace std;
+struct node
+{  
+    int data;  
+    struct node *next;  
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void display(struct node* head) 
+{  
+    struct node *temp = head;  
+      
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+void Add_Existing_Node(struct node** head, struct node** tail, struct node** temp) 
+{
+    if(*head == NULL) 
+    {  
+        *head = *temp;  
+        *tail = *temp; 
+    }  
+    else 
+    {  
+        (*tail)->next = *temp;  
+        *tail = *temp;  
+    }
+    
+}  
+
+struct node* Merge(struct node* temp1, struct node* temp2)
+{
+    struct node *new_head = NULL;
+    struct node *new_tail = NULL;
+    while(temp1!=NULL )
+    {   
+        //cout<<"temp1: "<<temp1->data<<" temp2: "<<temp2->data<<"\n";
+        if(temp1->data < temp2->data )
+        {
+            Add_Existing_Node(&new_head, &new_tail, &temp1);
+            temp1 = temp1->next;
+        }   
+        else if(temp2->data < temp1->data)
+        {
+            Add_Existing_Node(&new_head, &new_tail, &temp2);
+            temp2 = temp2->next;
+        } 
+        else if(temp2->data == temp1->data )
+        {
+            Add_Existing_Node(&new_head, &new_tail, &temp1);
+            temp1 = temp1->next;
+            Add_Existing_Node(&new_head, &new_tail, &temp2);
+            temp2 = temp2->next;
+        }
+        //display(new_head);
+    }   
+    
+    while(temp2!=NULL)
+    {
+        Add_Existing_Node(&new_head, &new_tail, &temp2);
+        temp2 = temp2->next;
+    }
+    new_tail->next = NULL;
+    return new_head;
+}
+
+int main()
+{
+    struct node *head1 = NULL;
+    struct node *tail1 = NULL;
+    for(int i = 0; i<16; i=i+3)
+        addNode(&head1, &tail1, i);
+    
+    struct node *head2 = NULL;
+    struct node *tail2 = NULL;
+    for(int i = 0; i<17; i = i+2)
+        addNode(&head2, &tail2, i);
+    
+    struct node* merged_head = Merge(head1, head2);
+    display(merged_head);
+    return 0;
+}

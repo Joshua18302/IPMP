@@ -1,0 +1,85 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+struct node
+{  
+    char data;  
+    struct node *next;  
+};      
+
+void addNode(struct node** head, struct node** tail, char data) 
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void Sort(struct node** head)
+{
+    vector<struct node*> con;
+    vector<struct node*> vowel;
+    struct node* temp = *head;
+    while(temp!=NULL)
+    {
+        if(temp->data == 'A' || temp->data == 'a' || temp->data == 'E' || temp->data == 'e' 
+                || temp->data == 'I' || temp->data == 'i' || temp->data == 'O' || temp->data == 'o' 
+                || temp->data == 'U' || temp->data == 'u' )
+            vowel.push_back(temp);
+
+        else
+            con.push_back(temp);
+            
+        temp = temp->next;
+    }
+    *head = con[0];
+    con.insert(con.end(), vowel.begin(), vowel.end());
+    vector<struct node*>::iterator v = con.begin();
+    for(; v!=con.end()-1; v++)
+        (*v)->next = *(v+1);
+        
+    (*v)->next = NULL;
+}
+
+void display(struct node* head) 
+{  
+    struct node *temp = head;  
+      
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+
+
+int main()
+{
+    struct node *head1 = NULL;
+    struct node *tail1 = NULL;
+    for(int i = 65; i<=90; i++)
+        addNode(&head1, &tail1, i);
+    
+    cout<<"Before sorting\n";
+    display(head1);
+    
+    Sort(&head1);
+    cout<<"After sorting\n";
+    display(head1);
+    return 0;
+}
