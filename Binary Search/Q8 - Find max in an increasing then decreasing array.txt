@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int Find_Pivot(int arr[], int n)
+{
+    int left = 0;
+    int right = n-1;
+        
+    int mid ;
+    while(left<=right)
+    {
+        mid = (left+right)/2;
+        
+        if(arr[mid] < arr[mid+1] and arr[mid-1] < arr[mid])
+            left = mid+1;
+            
+        
+        else if(arr[mid] > arr[mid+1] and arr[mid-1] > arr[mid])
+            right = mid-1;
+            
+        else
+            return mid;
+    }
+    if(right==-1)
+        return left;
+    if(left == n)
+        return right;
+}
+
+int main()
+{
+    int arr[] = {8, 10, 20, 80, 100, 200, 400, 500, 3, 2, 1};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    
+    /*for(int i = 0; i<n; i++)
+        cout<<arr[i]<<" ";
+    cout<<"\n";*/
+    
+    int pivot = Find_Pivot(arr,n);
+    cout<<"Max element:  "<<arr[pivot]<<"\n";
+
+    return 0;
+}
