@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+float Median(int arr1[], int arr2[], int n)
+{
+    int arr3[2*n];
+    int x=0, y=0;
+    for(int i = 0; i<2*n; i++)
+    {
+        
+        if(arr2[y] < arr1[x] or x>=n)
+        {
+            arr3[i] = arr2[y];
+            y++;
+        }
+        else if (arr1[x] < arr2[y] or y>=n)
+        {
+            arr3[i] = arr1[x];
+            x++;
+        }
+        else
+        {
+            arr3[i] = arr2[y];
+            y++;
+            i++;
+            arr3[i] = arr1[x];
+            x++;
+        }
+    }
+    float median = ((float)arr3[n] + (float)arr3[n- 1])/2;
+    return median;
+}
+
+int main()
+{
+    int arr1[] = {1,12,15,26,38};
+    int arr2[] = {2,13,16,30,45};
+    int n = sizeof(arr1)/sizeof(arr1[0]);
+    float median = Median(arr1, arr2, n);
+    cout<<"Median: "<<median<<"\n";
+    return 0;
+}

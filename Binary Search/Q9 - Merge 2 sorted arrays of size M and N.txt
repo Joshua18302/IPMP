@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+#define NA -1
+void Merge(int M_plus_N[], int N[], int n, int m)
+{
+    int index = m+n-1;
+    
+    for(int i = m+n-1; i>=0; i--)
+    {
+        if(M_plus_N[i]!=NA)
+        {
+            int temp = M_plus_N[i];
+            M_plus_N[i] = NA;
+            M_plus_N[index] = temp;
+            index--;
+        }
+        
+    }
+    
+    int start = 0;
+    int j=0;
+    for(int i = index+1; start!=i ; start++)
+    {
+        if(M_plus_N[i] > N[j] or i>=m+n)
+        {
+            M_plus_N[start] = N[j];
+            j++;
+        }
+        else if (M_plus_N[i] < N[j] or j>=n)
+        {
+            M_plus_N[start] = M_plus_N[i];
+            i++;
+        }
+        else
+        {
+            M_plus_N[start] = N[j];
+            j++;
+            start++;
+            M_plus_N[start] = M_plus_N[i];
+            i++;
+        }
+    }
+}
+
+int main()
+{
+    int M_plus_N[] = {7, 8, NA, NA, NA, 13, NA, 15, 20, NA, 21};
+    int N[] = {1,2,3,4,5};
+    int m = sizeof(M_plus_N)/sizeof(M_plus_N[0]);
+    int n = sizeof(N)/sizeof(N[0]);
+    m = m-n;
+    
+
+    Merge(M_plus_N, N, n, m);
+    
+    for(int i = 0; i<m+n; i++)
+        cout<<M_plus_N[i]<<" ";
+    cout<<"\n";
+    return 0;
+}
