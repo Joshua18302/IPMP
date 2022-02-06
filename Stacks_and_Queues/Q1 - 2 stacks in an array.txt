@@ -1,0 +1,69 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+#define n 10
+void push1(int arr[], int *top1, int data)
+{
+    if(*top1 < n/2 - 1)
+        arr[++(*top1)] = data;
+    else
+        cout<<"Stack1 Overflow by "<<data<<"\n";
+}
+
+void push2(int arr[], int *top2, int data)
+{
+    if(*top2 < n-1)
+        arr[++(*top2)] = data;
+    else
+        cout<<"Stack2 Overflow by "<<data<<"\n";
+}
+
+void pop1(int arr[], int *top1)
+{
+    if(*top1 > 0)
+        cout<<"Popped element: "<<arr[(*top1)--]<<"\n";
+    else
+        cout<<"Stack1 Underflow\n";
+}
+
+void pop2(int arr[], int *top2)
+{
+    if(*top2 > n/2)
+        cout<<"Popped element: "<<arr[(*top2)--]<<"\n";
+    else
+        cout<<"Stack2 Underflow\n";
+}
+
+void display(int arr[], int top1, int top2)
+{
+    cout<<"Stack1: ";
+    for(int i = 0; i<=top1; i++)
+        cout<<arr[i]<<" ";
+    cout<<"\n";
+    
+    cout<<"Stack2: ";
+    for(int i = n/2; i<=top2; i++)
+        cout<<arr[i]<<" ";
+    cout<<"\n";
+}
+int main()
+{
+    int arr[n];
+    int top1 = -1;
+    int top2 = n/2 -1;
+    push1(arr, &top1, 0);
+    push1(arr, &top1, 1);
+    push1(arr, &top1, 2);
+    push1(arr, &top1, 3);
+    push1(arr, &top1, 4);
+    push1(arr, &top1, 11);
+    push2(arr, &top2, 5);
+    push2(arr, &top2, 6);
+    push2(arr, &top2, 7);
+    push2(arr, &top2, 8);
+    push2(arr, &top2, 9);
+    push2(arr, &top2, 12);
+    display(arr, top1, top2);
+    return 0;
+}

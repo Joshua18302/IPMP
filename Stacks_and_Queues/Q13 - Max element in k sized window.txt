@@ -1,0 +1,64 @@
+#include <iostream>
+#include <deque>
+using namespace std;
+
+void Set_New_Max(int temp,  deque<int> *d)
+{
+    (*d).clear();
+    (*d).push_back(temp);
+}
+
+void Remove_Max_From_Window(int temp, deque<int> *d)
+{
+    (*d).pop_front();
+    int front = (*d).front();
+    
+    if(front<=temp)
+        Set_New_Max(temp, &(*d));
+
+    else
+        (*d).push_back(temp);
+}
+
+int main()
+{
+    int arr[] = {1, 2, 3, 1, 4, 5, 2, 3, 6};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    
+    int k = 3;
+    
+    deque<int> d;
+    d.push_back(arr[0]);
+    
+    for(int i = 1; i<k; i++)
+    {
+        while(!d.empty() and arr[i] > d.front())
+        {
+            d.pop_back();
+        }
+        d.push_back(arr[i]);
+        
+    }
+    cout<<d.front()<<" ";
+    
+    for(int i = k; i<n; i++)
+    {
+        if(arr[i] >= d.front())
+        {
+            Set_New_Max(arr[i], &d);
+            
+            cout<<d.front()<<" ";
+            continue;
+        }
+        
+        if(d.front() == arr[i-k])
+            Remove_Max_From_Window(arr[i], &d);
+            
+        else
+            d.push_back(arr[i]);
+            
+        cout<<d.front()<<" ";
+        
+    }
+    return 0;
+}

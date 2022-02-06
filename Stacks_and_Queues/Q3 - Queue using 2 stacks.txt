@@ -1,0 +1,47 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void Push(stack<int> *s1, stack<int> *s2)
+{
+    if(!(*s1).empty())
+    {
+        int temp = (*s1).top();
+        (*s1).pop();
+        Push(&(*s1), &(*s2));
+        (*s2).push(temp);
+    }
+}
+
+void Pop(stack<int>*s1)
+{
+    if (!(*s1).empty())
+    {
+        cout<<"Popped: "<<(*s1).top()<<"\n";
+        (*s1).pop();
+    }
+    else
+        cout<<"Underflow\n";
+}
+
+int main()
+{
+    stack<int> s1;
+    stack<int> s2;
+    for(int i = 0; i<10; i=i+2)
+    {
+        s2.push(i);
+        Push(&s1,&s2);
+        stack<int> s_temp = s1;
+        s1 = s2;
+        s2 = s_temp;
+    }
+    Pop(&s1);
+    Pop(&s1);
+    Pop(&s1);
+    Pop(&s1);
+    Pop(&s1);
+    Pop(&s1);
+    return 0;
+}

@@ -1,0 +1,85 @@
+#include <stdio.h>  
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+
+int n = 0;
+struct node
+{  
+    int data;  
+    struct node *next;  
+    struct node *prev;
+};      
+    
+void Push(struct node** top, struct node** mid, int data)
+{
+    n++;
+    struct node* temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;  
+    temp->next = NULL;  
+    temp->prev = *top;
+    
+    if(*top != NULL)
+        (*top)->next = temp;
+        
+    *top = temp;
+    
+    if(n==1)
+        *mid = *top;
+    else
+        if(n%2 == 1)
+            *mid = (*mid)->next;
+}  
+
+void Pop(struct node** top, struct node** mid) 
+{
+    if(*top == NULL)
+    {
+        cout<<"Underflow.\n";
+        return;
+    }
+    struct node *temp = (*top)->prev;
+    free(*top);
+    *top = temp;
+    
+    n--;
+    if(n%2 == 0)
+        *mid = (*mid)->prev;
+    
+}
+
+void Mid(struct node** mid)
+{
+    cout<<"Middle element: "<<(*mid)->data<<"\n";
+}
+
+void display(struct node** top) 
+{  
+    struct node *current = *top;  
+    
+    cout<<"Top-> ";
+    while(current!= NULL)
+    {  
+        cout<<current->data<<" ";  
+        current = current->prev;  
+    } 
+    cout<<"<-Bottom";
+    cout<<"\n";  
+}  
+      
+int main()  
+{  
+    struct node* top = NULL; 
+    struct node* mid = NULL;
+    
+    int size = 0;
+    for(int i=0; i<10; i++)
+        Push(&top, &mid, i);
+    
+    Pop(&top, &mid);
+    Pop(&top, &mid);
+    Mid(&mid);
+    
+    display(&top);  
+    return 0;  
+}
