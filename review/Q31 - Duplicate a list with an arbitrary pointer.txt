@@ -1,0 +1,88 @@
+#include <iostream>
+#include <stdlib.h>
+#include <map>
+using namespace std;
+
+struct node
+{  
+    int data;  
+    node *next; 
+    node *arb;
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    node *temp = (node*)malloc(sizeof(node));  
+    temp->data = data;
+    temp->next = NULL;
+    temp->arb = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void display(struct node* temp) 
+{  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" --arb--> "<< temp->arb->data<<"\n";
+        cout<<"|\n";
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+void Mapify(node* head, node** head_copy, map<node*, node*> *m)
+{
+    node* tail = NULL;
+    while(head != NULL) 
+    {  
+        addNode(&(*head_copy), &tail, head->data);
+        (*m)[head] = tail;
+        head = head->next;  
+    }
+}
+
+int main()
+{
+    node *head = NULL;
+    node *tail = NULL;
+    for(int i = 1; i<6; i++)
+        addNode(&head, &tail, i);
+    
+    head->arb = head->next->next;
+    head->next->arb = head;
+    head->next->next->arb = head->next->next->next->next;
+    head->next->next->next->arb = head->next->next;
+    head->next->next->next->next->arb = head->next;
+    
+    map<node*, node*> m;
+    node *head_copy = NULL;
+    Mapify(head, &head_copy, &m);
+    
+    node* current_node = head;
+    node* current_copy = head_copy;
+    while(current_node!=NULL)
+    {
+        node* arb_node = current_node->arb;
+        node* arb_node_copy = m[arb_node];
+        
+        current_copy->arb = arb_node_copy;
+        
+        current_node = current_node->next;
+        current_copy = current_copy->next;
+    }
+    cout<<"Original linked list: \n";
+    display(head);
+    cout<<"Copied linked list: \n";
+    display(head_copy);
+    return 0;
+}

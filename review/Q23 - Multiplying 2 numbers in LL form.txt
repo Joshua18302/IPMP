@@ -1,0 +1,112 @@
+
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+void addNode(struct node**, int);
+void display(struct node*);
+int Nth_node(struct node*, int);
+struct node
+{  
+    int data;  
+    struct node *next;  
+};      
+
+struct node *tail = NULL;  
+   
+void addNode(struct node** head, int data) 
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        tail = temp;  
+    }  
+    else 
+    {  
+        tail->next = temp;  
+        tail = temp;  
+    }  
+    
+}  
+
+
+
+
+int Number(struct node* temp)
+{
+    int number = 0;
+    int position = 1;
+    while(temp!=NULL)
+    {
+        number = number + position * (temp->data);
+        position = position * 10;
+        temp = temp->next;
+    }
+    return number;
+}
+
+int Sum(struct node* temp, int number)
+{
+    int sum = 0;
+    int position = 1;
+    while(temp!=NULL)
+    {
+        sum = sum + position * (temp->data) * number;
+        position = position * 10;
+        temp = temp->next;
+    }
+    return sum;
+}
+
+void Prod_List(struct node** head_prod, int sum)
+{
+    while(sum!=0)
+    {
+        int digit = sum%10;
+        addNode(&(*head_prod), digit);
+        sum = sum/10;
+    }
+}
+
+void reverse(struct node* temp1)
+{
+    struct node* temp2 = temp1->next;
+    if(temp2 == NULL)
+    {
+        cout<<temp1->data;
+        return;
+    }
+    reverse(temp2);
+    cout<<temp1->data;
+}
+
+int main()
+{
+    struct node *head1 = NULL;
+    //for(int i = 1; i<6; i++)
+        //addNode(&head1,i);
+        
+    addNode(&head1,4);
+    addNode(&head1,6);
+    
+    struct node *head2 = NULL;
+    //(int i = 1; i<5; i++)
+        //addNode(&head2,i);
+    
+    addNode(&head2, 7);
+    addNode(&head2, 2);
+    addNode(&head2, 3);
+
+    
+    int number = Number(head2);
+    int sum = Sum(head1, number);
+    
+    struct node* head_prod = NULL;
+    Prod_List(&head_prod, sum);
+    cout<<"Product of the 2 numbers is: ";
+    reverse(head_prod);
+    return 0;
+}

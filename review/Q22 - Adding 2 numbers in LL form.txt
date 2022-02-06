@@ -1,0 +1,121 @@
+
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+void addNode(struct node**, int);
+void display(struct node*);
+int Nth_node(struct node*, int);
+struct node
+{  
+    int data;  
+    struct node *next;  
+};      
+
+struct node *tail = NULL;  
+   
+void addNode(struct node** head, int data) 
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        tail = temp;  
+    }  
+    else 
+    {  
+        tail->next = temp;  
+        tail = temp;  
+    }  
+    
+}  
+
+void display(struct node* head) 
+{  
+    struct node *temp = head;  
+      
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+struct node* Sum(struct node* temp1, struct node* temp2)
+{
+    struct node* head = NULL;
+    int carry = 0;
+    int a,b;
+    while(temp1 != NULL or temp2 != NULL)
+    {
+        if(temp1 == NULL)
+            a = 0;
+        else
+        {
+            a = temp1->data;
+            temp1 = temp1->next;
+        }
+        
+        if(temp2 == NULL)
+            b = 0;
+        else
+        {
+            b = temp2->data;
+            temp2 = temp2->next;
+        }
+        
+        int sum = a+b+carry;
+        if(sum>=10)
+        {
+            carry = 1;
+            sum = sum-10;
+        }
+        else
+            carry = 0;
+        
+        addNode(&head, sum);
+        
+    }
+    if(carry == 1)
+        addNode(&head, 1);
+    return head;
+}
+
+void reverse(struct node* temp1)
+{
+    struct node* temp2 = temp1->next;
+    if(temp2 == NULL)
+    {
+        cout<<temp1->data;
+        return;
+    }
+    reverse(temp2);
+    cout<<temp1->data;
+}
+
+int main()
+{
+    struct node *head1 = NULL;
+    //for(int i = 1; i<6; i++)
+        //addNode(&head1,i);
+        
+    addNode(&head1,4);
+    addNode(&head1,6);
+    
+    struct node *head2 = NULL;
+    //(int i = 1; i<5; i++)
+        //addNode(&head2,i);
+    
+    addNode(&head2, 7);
+    addNode(&head2, 2);
+    
+    struct node* head_sum = Sum(head1, head2);
+    cout<<"Sum of the 2 numbers is: ";
+    reverse(head_sum);
+    return 0;
+}

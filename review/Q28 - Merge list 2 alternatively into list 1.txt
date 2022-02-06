@@ -1,0 +1,74 @@
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+struct node
+{  
+    int data;  
+    node *next;  
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    node *temp = (node*)malloc(sizeof(node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void display(struct node* temp) 
+{    
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+void Merge(node* head1, node** head2)
+{
+    node* temp1 = head1;
+    
+    while(temp1 != NULL and *head2 != NULL)
+    {
+        node* temp2 = temp1->next;
+        
+        node* temp = *head2;
+        *head2 = (*head2)->next;
+        
+        temp1->next = temp;
+        temp->next = temp2;
+        
+        temp1 = temp2;
+    }
+}
+
+int main()
+{
+    node *tail = NULL;
+    
+    node *head1 = NULL;
+    for(int i = 0; i<=10; i=i+2)
+        addNode(&head1, &tail, i);
+    
+    node *head2 = NULL;
+    for(int i = 0; i<10; i++)
+        addNode(&head2, &tail, i);
+        
+    
+    Merge(head1, &head2);
+    display(head1);
+    display(head2);
+    return 0;
+}

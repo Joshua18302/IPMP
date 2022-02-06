@@ -1,0 +1,117 @@
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+struct node
+{  
+    int data;  
+    node *next;  
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    node *temp = (node*)malloc(sizeof(node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void display(struct node* temp) 
+{    
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+node *merge(node* firstNode, node* secondNode) 
+{
+	node *merged = new node;
+	node *temp = new node;
+	
+	merged = temp;
+
+	while(firstNode != NULL && secondNode != NULL) 
+	{
+		if(firstNode->data<=secondNode->data) {
+			temp->next = firstNode;
+			firstNode = firstNode->next;
+		}
+		
+		else {
+			temp->next = secondNode;
+			secondNode = secondNode->next;
+		}
+		temp = temp->next;
+	}
+	
+	while(firstNode!=NULL) 
+	{
+		temp->next = firstNode;
+		firstNode = firstNode->next;
+		temp = temp->next;
+	}
+
+	while(secondNode!=NULL) 
+	{
+		temp->next = secondNode;
+		secondNode = secondNode->next;
+		temp = temp->next;
+	}
+	
+	return merged->next;
+}
+
+node *middle(node *head) 
+{
+	node *slow = head;
+	node *fast = head->next;
+	
+	while(slow->next != NULL && (fast!=NULL && fast->next!=NULL)) 
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return slow;
+}
+
+node *sort(node *head)
+{
+	if(head->next == NULL) 
+		return head;
+
+	node *mid = new node;
+	node *head2 = new node;
+	mid = middle(head);
+	head2 = mid->next;
+	mid->next = NULL;
+	
+	node *finalhead = merge(sort(head),sort(head2));
+	return finalhead;
+}
+
+int main() 
+{
+	node *tail = NULL;
+    
+    node *head = NULL;
+    for(int i = 10; i>=0; i--)
+    
+        addNode(&head, &tail, i);
+    display(head);
+	display(sort(head));	 
+	return 0;
+}

@@ -1,0 +1,154 @@
+#include <iostream>
+#include <stdlib.h>
+#include <vector>
+using namespace std;
+struct node
+{  
+    int data;  
+    node* next;  
+    node* right;
+};      
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    node *temp = (node*)malloc(sizeof(node));  
+    temp->data = data;
+    temp->next = NULL;
+    temp->right = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+void display(struct node* temp) 
+{    
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+node *merge(node* firstNode, node* secondNode) 
+{
+	node *merged = new node;
+	node *temp = new node;
+	
+	merged = temp;
+
+	while(firstNode != NULL && secondNode != NULL) 
+	{
+		if(firstNode->data<=secondNode->data) {
+			temp->next = firstNode;
+			firstNode = firstNode->next;
+		}
+		
+		else {
+			temp->next = secondNode;
+			secondNode = secondNode->next;
+		}
+		temp = temp->next;
+	}
+	
+	while(firstNode!=NULL) 
+	{
+		temp->next = firstNode;
+		firstNode = firstNode->next;
+		temp = temp->next;
+	}
+
+	while(secondNode!=NULL) 
+	{
+		temp->next = secondNode;
+		secondNode = secondNode->next;
+		temp = temp->next;
+	}
+	
+	return merged->next;
+}
+
+node *middle(node *head) 
+{
+	node *slow = head;
+	node *fast = head->next;
+	
+	while(slow->next != NULL && (fast!=NULL && fast->next!=NULL)) 
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return slow;
+}
+
+node *sort(node *head)
+{
+	if(head->next == NULL) 
+		return head;
+
+	node *mid = new node;
+	node *head2 = new node;
+	mid = middle(head);
+	head2 = mid->next;
+	mid->next = NULL;
+	
+	node *finalhead = merge(sort(head),sort(head2));
+	return finalhead;
+}
+
+node* Combine(node* head)
+{
+    node* new_head = NULL;
+    node* new_tail = NULL;
+    while(head!=NULL)
+    {
+        node* temp = head;
+        while(temp!=NULL)
+        {
+            addNode(&new_head, &new_tail, temp->data);
+            temp = temp->next;
+        }
+        
+        head = head->right;
+    }
+    return new_head;
+}
+
+int main() 
+{
+	node *tail = NULL;
+	
+    node *head1 = NULL;
+    for(int i = 0; i<5; i++)
+        addNode(&head1, &tail,  i);
+    
+    node *head2 = NULL;
+    for(int i = 5; i<10; i=i+2)
+        addNode(&head2, &tail,  i);
+        
+    node *head3 = NULL;
+    for(int i = 10; i<20; i=i+3)
+        addNode(&head3, &tail,  i);
+        
+    node *head4 = NULL;
+    for(int i = 20; i<=30; i=i+2)
+        addNode(&head4, &tail,  i);
+        
+    head1->right = head2;
+    head2->right = head3;
+    head3->right = head4;
+    
+    node* new_head = Combine(head1);
+    
+    display(sort(new_head));
+	return 0;
+}

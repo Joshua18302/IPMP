@@ -1,0 +1,127 @@
+#include <stdio.h>  
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+struct node
+{  
+    int data;  
+    node *next;  
+};      
+
+void addNode(node** head, node** tail, int data) 
+{
+    node *temp = (struct node*)malloc(sizeof(struct node));  
+    temp->data = data;
+    temp->next = NULL;
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->next = temp;  
+        *tail = temp;  
+    }
+}  
+
+node* Kth_node_from_end_func(node* head, node** kth_node_from_end_prev, int k)
+{
+    
+    static int count = 0;
+    if(head == NULL)
+    {
+        count++;
+        return head;
+    }
+    node* temp = Kth_node_from_end_func(head->next, &(*kth_node_from_end_prev), k);
+    if(count == k)
+        temp = head;
+    
+    if(count == k+1)
+        *kth_node_from_end_prev = head;
+        
+    count++;
+    return temp;
+}
+
+void display(node* head) 
+{  
+    node *temp = head;  
+      
+    cout<<"Data in the linked list: ";  
+    while(temp != NULL) 
+    {  
+        cout<<temp->data<<" ";  
+        temp = temp->next;  
+    }  
+    cout<<"\n";  
+    return;
+}
+
+int main()
+{
+    node *head = NULL;
+    node *tail = NULL;
+    int n = 10;
+    for(int i = 0; i<n; i++)
+        addNode(&head, &tail, i);
+    
+    int k = 1;
+    
+    if(k>n/2)
+        k = n-k +1;
+    
+    node* kth_node = head;
+    node* kth_node_prev = NULL;
+    for(int i = 1; i<k; i++)
+    {
+        kth_node_prev = kth_node;
+        kth_node = kth_node->next;
+    }
+    int size = 0;
+    node* kth_node_from_end_prev = NULL;
+    node* kth_node_from_end = Kth_node_from_end_func(head, &kth_node_from_end_prev, k);
+    
+    
+    if(kth_node_from_end == kth_node)
+    {
+        display(head);
+        exit(0);
+    }
+    
+    else if(kth_node->next == kth_node_from_end)
+    {
+        if(kth_node == head)
+        {
+            head = kth_node_from_end;
+            head->next = kth_node;
+            kth_node->next = NULL;
+        }
+        else
+        {
+            kth_node_prev->next = kth_node_from_end;
+            kth_node->next = kth_node_from_end->next;
+            kth_node_from_end->next = kth_node;
+        }
+    }
+    else 
+    {
+        node* temp1 = kth_node->next;
+        node* temp2 = kth_node_from_end->next;
+        
+        kth_node_from_end->next = temp1;
+        kth_node->next = temp2;
+        
+        kth_node_from_end_prev->next = kth_node;
+        
+        if(kth_node != head)
+            kth_node_prev->next = kth_node_from_end;
+            
+        else
+            head = kth_node_from_end;
+        
+    }    
+    display(head);
+    return 0;
+}
