@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+int Identical(node* root, node* root2,  int flag)
+{
+    if(root == NULL and root2 == NULL)
+        return 1;
+    else if(root == NULL or root2 == NULL)
+        return 0;
+    
+    if(Identical(root->left, root2->left, flag) and Identical(root->right, root2->right, flag)
+        and root->data == root2->data)
+        
+        return 1;
+    else
+        return 0;
+        
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+
+    node* root2 = NULL;
+    root2 = New_Node(1);
+    root2->left = New_Node(2);
+	root2->right = New_Node(3);
+	root2->left->left = New_Node(4);
+	root2->left->right = New_Node (5);
+	root2->right->left = New_Node(6);
+	root2->right->right = New_Node(7);
+	
+	if(Identical(root, root2, 1) == 1)
+        cout<<"Trees are Identical.";
+    else
+        cout<<"Trees are not Identical.";
+    return 0;
+}

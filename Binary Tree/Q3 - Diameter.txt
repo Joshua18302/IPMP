@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+int d = 0;
+int Diameter(node* root)
+{
+    if(root ==NULL)
+        return 0;
+        
+    int left_height = Diameter(root->left);
+    int right_height = Diameter(root->right);
+    
+    
+    if(left_height + right_height + 1 > d)
+        d = left_height + right_height + 1;
+        
+    if(left_height > right_height)
+        return left_height+1;
+    else
+        return right_height+1;
+    
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	root->left->left->left = New_Node(8);
+	root->right->right->right = New_Node(9);
+	int x = Diameter(root);
+    cout<<"Width of the tree is: "<< d;
+    return 0;
+}

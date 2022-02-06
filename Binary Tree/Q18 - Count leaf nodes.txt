@@ -1,0 +1,49 @@
+#include <iostream>
+#define MAX_SIZE 10
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+int Count_Leaf(node* root)
+{
+    if(root == NULL)
+        return 0;
+    
+    int leftcount = Count_Leaf(root->left);
+    int rightcount = Count_Leaf(root->right);
+    
+    if(leftcount == 0 and rightcount == 0)
+        return 1;
+    else
+        return leftcount+rightcount;
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	cout<<"Number of leaf nodes: "<<Count_Leaf(root);
+    return 0;
+}

@@ -1,0 +1,45 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Postorder_Delete(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Postorder_Delete(root->left);
+    Postorder_Delete(root->right);
+    free(root);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	Postorder_Delete(root);
+    return 0;
+}

@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+int Calculate(int sum, int x, char ch)
+{
+    if(ch=='+')
+        sum = sum+x;
+    
+    else if(ch=='-')
+        sum=sum-x;
+    
+    return sum;
+}
+void Func(queue<node*> *s1, int *sum, char ch)
+{
+    queue<node*> s2;
+    while(!(*s1).empty())
+    {
+        node* temp = (*s1).front();
+        *sum = Calculate(*sum, temp->data, ch);
+        (*s1).pop();
+        
+        if(temp->right != NULL)
+            s2.push(temp->right);
+    
+        if(temp->left != NULL)
+            s2.push(temp->left);
+            
+    }
+    if(!s2.empty())
+    {
+        if(ch=='+')
+            ch = '-';
+        
+        else if(ch=='-')
+            ch = '+';
+        Func(&s2, &(*sum), ch);
+    }
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	queue<node*> s1;
+    s1.push(root);
+    int sum = 0;
+    
+	Func(&s1, &sum, '+');
+	
+	cout<<sum;
+    return 0;
+}

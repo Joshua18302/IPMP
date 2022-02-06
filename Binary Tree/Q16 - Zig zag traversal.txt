@@ -1,0 +1,82 @@
+#include <iostream>
+#include <deque>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Level_Order_Spiral(deque<node*> *d1, int flag)
+{
+    deque<node*> d2;
+    while(!(*d1).empty())
+    {
+        if(flag == 1)
+        {
+            node* temp = (*d1).back();
+            cout<<temp->data<<" ";
+            (*d1).pop_back();
+            
+            if(temp->right != NULL)
+                d2.push_front(temp->right);
+            
+            if(temp->left != NULL)
+                d2.push_front(temp->left);
+        }
+        
+        else if(flag == 2)
+        {
+            node* temp = (*d1).front();
+            cout<<temp->data<<" ";
+            (*d1).pop_front();
+            if(temp->left != NULL)
+                d2.push_back(temp->left);
+            
+            if(temp->right != NULL)
+                d2.push_back(temp->right);
+        }
+        
+        
+        
+    }
+    
+    if(!d2.empty())
+    {
+        if(flag==1)
+            flag = 2;
+        else if(flag = 2)
+            flag = 1;
+        Level_Order_Spiral(&d2, flag);
+    }
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	deque<node*> d1;
+    d1.push_back(root);
+    
+	Level_Order_Spiral(&d1, 1);
+    return 0;
+}

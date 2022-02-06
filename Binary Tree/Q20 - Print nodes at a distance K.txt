@@ -1,0 +1,63 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Print_K(queue<node*> *s1, int k, int K)
+{
+    queue<node*> s2;
+    
+    while(!(*s1).empty())
+    {
+        node* temp = (*s1).front();
+        if(k==K)
+            cout<<temp->data<<" ";
+        
+        (*s1).pop();
+        
+        if(temp->left != NULL)
+            s2.push(temp->left);
+          
+        if(temp->right != NULL)
+            s2.push(temp->right);
+    }
+    if(k==K)
+        return;
+    k++;
+    if(!s2.empty())
+        Print_K(&s2, k, K);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	queue<node*> s1;
+    s1.push(root);
+
+	Print_K(&s1, 0, 2);
+    return 0;
+}

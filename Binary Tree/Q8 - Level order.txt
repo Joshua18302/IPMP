@@ -1,0 +1,55 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Level_Order(queue<node*> q)
+{
+    while(!q.empty())
+    {
+        node* temp = q.front();
+        cout<<temp->data<<" ";
+        q.pop();
+        
+        if(temp->left != NULL)
+            q.push(temp->left);
+            
+        if(temp->right != NULL)
+            q.push(temp->right);
+    }
+    
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	queue<node*> q;
+	q.push(root);
+	
+	cout<<"Level order: ";
+	Level_Order(q);
+    return 0;
+}

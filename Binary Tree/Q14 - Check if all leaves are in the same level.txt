@@ -1,0 +1,87 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Connect_Row(queue<node*> *q1)
+{
+    queue<node*> q2;
+    int flag = 0;
+    while(!(*q1).empty())
+    {
+        node* temp = (*q1).front();
+        
+        (*q1).pop();
+        
+        if(temp->left == NULL and temp->right == NULL)
+        {
+            flag = 1;
+            break;
+        }
+        
+        if(temp->left != NULL)
+            q2.push(temp->left);
+            
+        if(temp->right != NULL)
+            q2.push(temp->right);
+      
+    }
+    if(!q2.empty() and flag == 0)
+        Connect_Row(&q2);
+        
+    else if(!q2.empty() and flag == 1)
+    {
+        cout<<"All leaves are not in the same level.\n";
+        return;
+    }
+    else if(q2.empty() and flag == 1)
+    {
+        while(!(*q1).empty())
+        {
+            node* temp = (*q1).front();
+            (*q1).pop();
+            
+            if(temp->left != NULL and temp->right != NULL)
+            {
+                cout<<"All leaves are not in the same level.\n";
+                return;
+            }
+        }
+        cout<<"All leaves are in the same level.\n";
+        
+    }
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	queue<node*> q1;
+    q1.push(root);
+
+	Connect_Row(&q1);
+    return 0;
+}

@@ -1,0 +1,62 @@
+#include <iostream>
+#define MAX_SIZE 10
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+int arr[MAX_SIZE];
+int i = 0;
+void Inorder(node* root)
+{
+    if(root->left != NULL)
+    {
+        if(i>0)
+            i--;
+        Inorder(root->left);
+    }
+    cout<<"i: "<<i<<" root: "<<root->data<<"\n";
+    arr[i] += root->data;
+    i++;
+    if(root->right != NULL)
+    {
+        Inorder(root->right);
+        i--;
+    }
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	Inorder(root);
+	for(int i = 0; i<MAX_SIZE; i++)
+	{
+	    if(arr[i] == 0)
+	        break;
+	    cout<<arr[i]<<" ";
+	}
+	    
+    return 0;
+}

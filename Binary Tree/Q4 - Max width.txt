@@ -1,0 +1,56 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+int max_width = 0;
+map<int,int> m;
+void Width(node* root, int level)
+{
+    if(root ==NULL)
+        return;
+    
+    m[level]++;
+    Width(root->left, level + 1);
+    Width(root->right, level + 1);
+    
+    
+    if(m[level] > max_width)
+        max_width = m[level];
+        
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	root->left->left->left = New_Node(8);
+	root->right->right->right = New_Node(9);
+	
+	
+	Width(root, 1);
+    cout<<"Maximum width of the tree is: "<< max_width;
+    
+    return 0;
+}
