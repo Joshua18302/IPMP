@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+int Sum(node* root)
+{
+    if(root == NULL)
+        return 0;
+    
+    int left = Sum(root->left);
+    int right = Sum(root->right);
+    
+    return left+right+root->data;;
+}
+
+bool Sum_Tree(node* root)
+{
+    if(root == NULL or (root->left == NULL and root->right == NULL))
+        return true;
+        
+    bool left_check = Sum_Tree(root->left);
+    bool right_check = Sum_Tree(root->right);
+    
+    if(left_check and right_check)
+    
+        if(root->data == Sum(root->left) + Sum(root->right))
+            return true;
+        
+        else
+            return false;
+    else
+        return false;
+}
+
+int main()
+{
+    node *root = New_Node(26);
+    root->left = New_Node(10);
+    root->right = New_Node(3);
+    root->left->left = New_Node(4);
+    root->left->right = New_Node(6);
+    root->right->right = New_Node(3);
+	
+    if(Sum_Tree(root))
+        cout<<"Given binary tree is a sum tree.\n";
+        
+    else
+        cout<<"Given binary tree is not a sum tree.\n";
+        
+    return 0;
+}

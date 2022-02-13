@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Zero_or_One(node* root, int K, int N, int level, int *count)
+{
+    if(root == NULL)
+        return;
+    
+    if(level == N)
+    {
+        (*count)++;
+        
+        if(*count == K)
+            cout<<root->data<<" ";
+        
+        return;
+    }
+    
+    Zero_or_One(root->left, K, N, level+1, &*count);
+    Zero_or_One(root->right, K, N, level+1, &*count);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(0);
+    root->left = New_Node(0);
+	root->right = New_Node(1);
+	root->left->left = New_Node(0);
+	root->left->right = New_Node (1);
+	root->right->left = New_Node(1);
+	root->right->right = New_Node(0);
+	
+	int K = 2;
+	int N = 1;
+	int count = 0;
+	int level = 0;
+	Zero_or_One(root, K, N, level, &count);
+    return 0;
+}

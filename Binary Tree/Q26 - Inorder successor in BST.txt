@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+node* Insert(node* root, int i)
+{
+    if(root == NULL)
+        return New_Node(i);
+    
+    if(i < root->data)
+        root->left = Insert(root->left, i);
+        
+    else
+        root->right = Insert(root->right, i);
+    
+    return root;
+}
+
+void Inorder(node* root, node* key, node** succ, int* flag)
+{
+    if(root==NULL or *flag == 2)
+        return ;
+    
+    Inorder(root->left, key, succ, flag);
+    
+    if(*flag == 1)
+    {
+        *succ = root;
+        *flag = 2;
+    }
+        
+    if(root == key)
+        *flag = 1;
+       
+    Inorder(root->right, key, succ, flag);
+}
+
+node* Inorder_Successor(node* root, node* key)
+{
+    if (key->right != NULL)
+    {
+        node* temp = key->right;
+        
+        while (temp->left != NULL) 
+            temp = temp->left;
+            
+        return temp;
+    }
+    
+    int flag = 0;
+    node* succ;
+    if(key->data < root->data)
+    {
+        Inorder(root->left, key, &succ, &flag);
+        if(succ == NULL)
+            return root;
+    }
+    else
+        Inorder(root->right, key, &succ, &flag);
+        
+    return succ;
+}
+
+int main()
+{
+    node* root = NULL;
+    root = Insert(root, 4);
+	root = Insert(root, 2);
+	root = Insert(root, 1);
+	root = Insert(root, 3);
+	root = Insert(root, 6);
+	root = Insert(root, 5);
+	root = Insert(root, 7);
+	
+	node* key = root->right->left;
+	
+	node* temp = Inorder_Successor(root, key);
+	cout<<temp->data;
+    return 0;
+}

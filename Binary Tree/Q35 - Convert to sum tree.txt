@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+int Sum_Tree(node* root)
+{
+    if(root == NULL)
+        return 0;
+    
+    int leftsum = Sum_Tree(root->left);
+    int rightsum = Sum_Tree(root->right);
+    
+    int x = root->data;
+    
+    if(root->left == NULL and root->right == NULL)
+    {
+        root->data = 0;
+        return x;
+    }
+    
+    root->data = leftsum + rightsum;
+    return x + root->data;
+}
+
+int main()
+{
+    node* root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	cout<<"Inorder traversal before conversion: ";
+	Inorder(root);
+	Sum_Tree(root);
+	cout<<"\nInorder traversal after conversion: ";
+	Inorder(root);
+    return 0;
+}

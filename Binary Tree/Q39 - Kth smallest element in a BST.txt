@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+node* Insert(node* root, int i)
+{
+    if(root == NULL)
+        return New_Node(i);
+    
+    if(i < root->data)
+        root->left = Insert(root->left, i);
+        
+    else
+        root->right = Insert(root->right, i);
+    
+    return root;
+}
+
+node* Kth_Smallest(node* root, int* count,  int k)
+{
+    if(root == NULL) 
+        return root;
+    
+    node * temp = Kth_Smallest(root->left, count, k);
+    
+    if(temp!=NULL)
+        return temp;
+    else
+    {
+        (*count)++;
+        if(*count == k)
+            return root;
+            
+        return Kth_Smallest(root->right, count, k);
+    }
+}
+
+int main()
+{
+    node* root = NULL;
+    root = Insert(root, 4);
+	root = Insert(root, 2);
+	root = Insert(root, 1);
+	root = Insert(root, 3);
+	root = Insert(root, 6);
+	root = Insert(root, 5);
+	root = Insert(root, 7);
+	int count = 0;
+	int k = 5;
+	
+	cout<<"kth smallest element: "<<Kth_Smallest(root, &count, k)->data<<"\n";
+    return 0;
+}

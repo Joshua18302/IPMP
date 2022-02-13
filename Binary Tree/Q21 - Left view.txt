@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+void Print_Left_View(node* root, int *check, int level)
+{
+    if(root == NULL)
+        return;
+    
+    if(*check <= level)
+    {
+        cout<<root->data<<" ";
+        (*check)++;
+    }
+    
+    Print_Left_View(root->left, &(*check), level+1);
+    Print_Left_View(root->right, &(*check), level+1);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+
+	int check = 0;
+	Print_Left_View(root, &check, 0);
+    return 0;
+}

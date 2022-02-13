@@ -1,0 +1,71 @@
+#include <iostream>
+#define MIN -100
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+node* Insert(node* root, int i)
+{
+    if(root == NULL)
+        return New_Node(i);
+    
+    if(i < root->data)
+        root->left = Insert(root->left, i);
+        
+    else
+        root->right = Insert(root->right, i);
+    
+    return root;
+}
+
+void BST(node* root, int* flag, int* min)
+{
+    if(root == NULL or *flag == 0)
+        return;
+    
+    BST(root->left, flag, min);
+    
+    if(root->data >= *min)
+        *min = root->data;
+    
+    else
+        *flag = 0;
+    BST(root->right, flag, min);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = Insert(root, 4);
+	root = Insert(root, 2);
+	root = Insert(root, 1);
+	root = Insert(root, 3);
+	root = Insert(root, 6);
+	root = Insert(root, 5);
+	root = Insert(root, 7);
+	
+	int flag = 1;
+	int min = MIN;
+	BST(root, &flag, &min);
+	
+	if(flag)
+	    cout<<"Given tree is a BST.";
+    else
+        cout<<"Given tree is not a BST.";;
+    return 0;
+}
