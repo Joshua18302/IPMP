@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+vector<int> v;
+
+void Print_Path()
+{
+    for(int i = 0; i<v.size(); i++)
+        cout<<v[i]<<" ";
+
+    cout<<"\n";
+}
+
+void Print_Leaf(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    v.push_back(root->data);
+    Print_Leaf(root->left);
+    Print_Leaf(root->right);
+    
+    if(root->left == NULL and root->right == NULL)
+        Print_Path();
+    
+    v.pop_back();
+}
+
+int main()
+{
+    node *root = New_Node(10);
+    root->left = New_Node(8);
+    root->right = New_Node(2);
+    root->left->left = New_Node(3);
+    root->left->right = New_Node(5);
+    root->right->left = New_Node(2);
+	
+	Print_Leaf(root);
+    return 0;
+}

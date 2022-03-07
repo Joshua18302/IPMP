@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+vector<int> v1;
+vector<int> v2;
+int maxsum = 0;
+
+void Print_Leaf(node* root, int sum)
+{
+    if(root == NULL)
+        return;
+    
+    sum = sum+root->data;
+    v2.push_back(root->data);
+    Print_Leaf(root->left, sum);
+    Print_Leaf(root->right, sum);
+    
+    if(root->left == NULL and root->right == NULL)
+    {
+        if(sum > maxsum)
+        {
+            maxsum = sum;
+            v1.clear();
+            v1 = v2;
+        }
+    }
+    
+    v2.pop_back();
+}
+
+int main()
+{
+    node* root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(0);
+	
+	Print_Leaf(root, 0);
+	cout<<"Path: ";
+	for(int i = 0; i<v1.size(); i++)
+        cout<<v1[i]<<" ";
+    cout<<"\nSum: "<<maxsum;
+    return 0;
+}

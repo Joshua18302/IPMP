@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Preorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    cout<<root->data<<" ";
+    Preorder(root->left);
+    Preorder(root->right);
+}
+
+int i = 0;
+node* Construct_Tree(int arr[], char LN[])
+{
+     
+    if(LN[i] == 'L')
+        return New_Node(arr[i++]);
+        
+    node* root = New_Node(arr[i++]);
+    
+    root->left = Construct_Tree(arr, LN);
+    root->right = Construct_Tree(arr, LN);
+    
+    return root;
+}
+
+int main()
+{
+    int arr[] = { 10, 30, 20, 5, 15};
+    char LN[] = {'N','N','L','L','L'};
+    
+	node* root = Construct_Tree(arr, LN);
+	Preorder(root);
+	
+    return 0;
+}

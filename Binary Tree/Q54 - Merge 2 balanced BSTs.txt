@@ -1,0 +1,138 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+node* Insert(node* root, int i)
+{
+    if(root == NULL)
+        return New_Node(i);
+    
+    if(i < root->data)
+        root->left = Insert(root->left, i);
+        
+    else
+        root->right = Insert(root->right, i);
+    
+    return root;
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+int Middle(int low, int high)
+{
+    if((high-low)%2 == 0)
+        return (high-low)/2 + low;
+    else
+        return (high-low)/2 + low+1;
+}
+
+node* BST(node* arr[], int low, int high)
+{
+    if(low>high)
+        return NULL;
+        
+    if(low == high)
+    {
+        arr[low]->left = NULL;
+        arr[low]->right = NULL;
+        return arr[low];
+    }
+    
+    int mid = Middle(low, high);
+    node* root = arr[mid];
+    root->left = BST(arr, low, mid-1);
+    root->right = BST(arr, mid+1, high);
+    
+    return root;
+}
+
+void Make_Array(node* root, node* arr[], int *i)
+{
+    if(root == NULL)
+        return;
+    
+    Make_Array(root->left, arr, i);
+    *i = *i + 1;
+    arr[*i] = root;
+    Make_Array(root->right, arr, i);
+}
+
+void Merge(node* arr[], node* a1[], node* a2[], int n1, int n2)
+{
+    int i=0,j=0,k=0;
+    while(i<n1 and j<n2)
+    {
+        if(a1[i]->data < a2[j]->data)
+        {
+            arr[k] = a1[i];
+            k++;
+            i++;
+        }
+        else
+        {
+            arr[k] = a2[j];
+            k++;
+            j++;
+        }
+    }
+    for(; i<n1; i++)
+    {
+        arr[k] = a1[i];
+        k++;
+    }
+    
+    for(; j<n2; j++)
+    {
+        arr[k] = a2[j];
+        k++;
+    }
+}
+
+int main()
+{
+    node* root1 = NULL;
+    for(int i = 1; i<8; i++)
+        root1 = Insert(root1, i);
+    
+    node* root2 = NULL;
+    for(int i = 8; i<15; i++)
+        root2 = Insert(root2, i); 
+    
+    int n1 = 7;
+    int n2 = 7;
+    node* arr1[n1];
+    node* arr2[n2];
+    int index = -1;
+	Make_Array(root1, arr1, &index);
+	index = -1;
+	Make_Array(root2, arr2, &index);
+	node* arr[n1+n2];
+	Merge(arr,arr1,arr2,n1,n2);
+	
+	node* root = BST(arr, 0, n1+n2-1);
+	Inorder(root);
+    return 0;
+}

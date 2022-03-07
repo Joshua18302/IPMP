@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void addNode(struct node** head, struct node** tail, int data) 
+{
+    node *temp = New_Node(data);
+    
+    if(*head == NULL) 
+    {  
+        *head = temp;  
+        *tail = temp;  
+    }  
+    else 
+    {  
+        (*tail)->right = temp;  
+        temp->left = *tail;
+        *tail = temp;  
+    }
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+node* Middle(node* start, node* end)
+{
+    if(start == NULL)
+        return NULL;
+        
+    node* temp1 = start;
+    node* temp2 = start->right;
+    while(temp1!=end and temp2!=end and temp2->right!=end)
+    {
+        temp1 = temp1->right;
+        temp2 = temp2->right->right;
+    }
+    if(temp2 == end)
+        return temp1;
+    else
+        return temp1->right;
+}
+
+void Nullify(node* root)
+{
+    node* right = root->right;
+    node* left = root->left;
+    
+    if(right!=NULL)
+    {
+        right->left = NULL;
+        root->right = NULL;
+    }
+    
+    if(left!=NULL)
+    {
+        left->right = NULL;
+        root->left = NULL;
+    }
+}
+
+void BST(node* root, node* start)
+{
+    if(root == NULL)
+        return;
+        
+    node* next = root->right;
+    Nullify(root);
+    root->left = Middle(start, NULL);
+    root->right = Middle(next, NULL);
+    
+    if(root->left == root or root->right == root)
+    {
+        root->left = NULL;
+        root->right = NULL;
+        return;
+    }
+    BST(root->left, start);
+    BST(root->right, next);
+    
+}
+
+int main()
+{
+    node *head = NULL;
+    node *tail = NULL;
+    for(int i = 1; i<9; i++)
+        addNode(&head, &tail, i);
+	
+	node* root = Middle(head, NULL);
+	BST(root, head);
+	Inorder(root);
+    return 0;
+}

@@ -1,0 +1,78 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+multimap<int,node*> m;
+multimap<int,node*>::iterator it = m.end();
+
+node* Construct_Tree()
+{
+    node* Root = (--it)->second;
+    multimap<int,node*>::iterator it2 = it;
+    
+    while(it2!=m.begin())
+    {
+        node* root = it->second;
+        node* temp = (--it2)->second;
+        
+        root->left = temp;
+        
+        if(it2!=m.begin())
+        {
+            temp = (--it2)->second;
+            root->right = temp;
+            it--;
+        }
+    }
+    
+    return Root;
+}
+
+int main()
+{
+    int n = 6;
+    int mat[n][n] = {{0, 0, 0, 0, 0, 0}, {1, 0, 0, 0, 1, 0},
+    {0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 0}};
+        
+	for(int i = 0; i<n; i++)
+	{
+	    int count = 0;
+        for(int j = 0; j<n; j++)
+        {
+            if(mat[i][j] == 1)
+                count++;
+        }
+        m.insert(pair<int,node*>(count,New_Node(i)));
+	}
+	
+	node* root = Construct_Tree();
+	Inorder(root);
+    return 0;
+}

@@ -1,0 +1,64 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+map<int,int> m;
+int preindex = 0;
+node* Construct_Tree(int pre[], int post[], int high, int n)
+{
+    int data = pre[preindex];
+    int index = m[data];
+    
+    if(index >= high or preindex>=n)
+        return NULL;
+    
+    preindex++;   
+    node* root = New_Node(data);
+    
+    root->left = Construct_Tree(pre, post, index, n);
+    root->right = Construct_Tree(pre, post, index, n);
+    
+    return root;
+}
+
+int main()
+{
+    
+    int pre[] = {1, 2, 4, 8, 9, 5, 10, 11, 3, 6, 7};
+    int post[] = {8, 9, 4, 10, 11, 5, 2, 6, 7, 3, 1};
+	int n = sizeof(pre)/sizeof(pre[0]);
+	
+	for(int i = 0; i<n; i++)
+        m[post[i]] = i;
+        
+	node* root = Construct_Tree(pre, post, n, n);
+	Inorder(root);
+	
+    return 0;
+}

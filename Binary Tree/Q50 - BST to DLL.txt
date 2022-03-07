@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Inorder(node* root, node** head, node** tail)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left, head, tail);
+    
+    if(*head == NULL)
+    {
+        *head = root;
+        *tail = root;
+    }
+    else
+    {
+        (*tail)->right = root;
+        root->left = *tail;
+        *tail = root;
+    }
+    
+    Inorder(root->right, head, tail);
+}
+
+void display(node* temp) 
+{ 
+    node* temp2 = temp->right;
+    cout<<"Data in the linked list: \n";  
+    while(temp != NULL and temp2 != NULL) 
+    {
+        cout<<temp->data<<" -right-> "<<temp2->data<<" -left-> "<<temp2->left->data<<"\n";  
+        temp = temp->right;  
+        temp2 = temp->right;
+    }  
+    cout<<"\n";  
+    return;
+}
+
+int main()
+{
+    node* root = NULL;
+    root = New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+	
+	node* head = NULL;
+	node* tail = NULL;
+	Inorder(root, &head, &tail);
+    display(head);
+    return 0;
+}

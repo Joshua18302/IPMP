@@ -1,0 +1,82 @@
+#include <iostream>
+#define MARKER -1
+
+using namespace std;
+struct node
+{
+	int data;
+	node* left;
+	node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void serialize(node *root, FILE *fp)
+{
+	if (root == NULL)
+	{
+		fprintf(fp, "%d ", MARKER);
+		return;
+	}
+	
+	fprintf(fp, "%d ", root->data);
+	serialize(root->left, fp);
+	serialize(root->right, fp);
+}
+
+void deSerialize(node** root, FILE *fp)
+{
+	int val;
+	if (!fscanf(fp, "%d ", &val) || val == MARKER)
+	    return;
+	
+	*root = New_Node(val);
+	deSerialize(&(*root)->left, fp);
+	deSerialize(&(*root)->right, fp);
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+
+int main()
+{
+	node* root =  New_Node(1);
+    root->left = New_Node(2);
+	root->right = New_Node(3);
+	root->left->left = New_Node(4);
+	root->left->right = New_Node (5);
+	root->right->left = New_Node(6);
+	root->right->right = New_Node(7);
+
+	FILE *fp = fopen("tree.txt", "w");
+	if (fp == NULL)
+	{
+		puts("Could not open file");
+		return 0;
+	}
+	serialize(root, fp);
+	fclose(fp);
+
+	node *root1 = NULL;
+	fp = fopen("tree.txt", "r");
+	deSerialize(&root1, fp);
+    fclose(fp);
+	cout<<"Inorder Traversal of the tree:\n";
+	Inorder(root1);
+	return 0;
+}

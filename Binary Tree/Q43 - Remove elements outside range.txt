@@ -1,0 +1,137 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    
+    return temp;
+}
+
+node* Insert(node* root, int i)
+{
+    if(root == NULL)
+        return New_Node(i);
+    
+    if(i < root->data)
+        root->left = Insert(root->left, i);
+        
+    else
+        root->right = Insert(root->right, i);
+    
+    return root;
+}
+
+void Free(node* root)
+{
+    if(root == NULL)
+        return;
+        
+    Free(root->left);
+    Free(root->right);
+    
+    root->left = NULL;
+    root->right = NULL;
+    free(root);
+}
+
+void Remove(node* parent, node* root, int k1, int k2)
+{
+    if(root == NULL )
+        return;
+        
+    if(root->data > k2)
+    {
+        Free(root->right);
+        root->right = NULL;
+        
+        if(parent->right == root)
+        {
+            parent->right = root->left;
+        }
+        else if(parent->left == root)
+        {
+            parent->left = root->left;
+        }
+        Remove(parent, root->left, k1, k2);
+        root->left = NULL;
+        free(root);
+    }
+    
+    else if(root->data < k1)
+    {
+        
+        Free(root->left);
+        root->left = NULL;
+        
+        if(parent->right == root)
+        {
+            parent->right = root->right;
+        }
+        else if(parent->left == root)
+        {
+            parent->left = root->right;
+        }
+        Remove(parent, root->right, k1, k2);
+        root->right = NULL;
+        free(root);
+    }
+    
+    else
+    {
+        Remove(root, root->left, k1, k2);
+        Remove(root, root->right, k1, k2);
+    }
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+        
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+int main()
+{
+    node* root = NULL;
+    root = Insert(root, 40);
+	root = Insert(root, 20);
+	root = Insert(root, 10);
+	root = Insert(root, 30);
+	root = Insert(root, 60);
+	root = Insert(root, 50);
+	root = Insert(root, 70);
+	int k1 = 30;
+	int k2 = 60;
+	node* parent  = root;
+	Remove(parent, root->right, k1, k2);
+	Remove(parent, root->left, k1, k2);
+	
+	node* temp = root;
+	if(root->data < k1)
+	{
+	    root = root->right;
+	    free(temp);
+	}
+	else if(root->data > k2)
+	{
+	    root = root->left;
+	    free(temp);
+	}
+	cout<<"\nData in the tree: ";
+	Inorder(root);
+    return 0;
+}

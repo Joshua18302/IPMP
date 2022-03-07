@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node* left;
+    node* right;;
+};
+
+node* New_Node(int data)
+{
+    node* temp = new node();
+    temp->data = data;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+void Inorder(node* root)
+{
+    if(root == NULL)
+        return;
+    
+    Inorder(root->left);
+    cout<<root->data<<" ";
+    Inorder(root->right);
+}
+
+int Middle(int arr[], int low, int high)
+{
+    if((high-low)%2 == 0)
+        return (high-low)/2 + low;
+    else
+        return (high-low)/2 + low+1;
+}
+
+node* BST(int arr[], int low, int high)
+{
+    if(low>high)
+        return NULL;
+        
+    if(low == high)
+    {
+        return New_Node(arr[low]);
+    }
+    
+    int mid = Middle(arr, low, high);
+    node* root = New_Node(arr[mid]);
+    
+    root->left = BST(arr, low, mid-1);
+    root->right = BST(arr, mid+1, high);
+    
+    return root;
+}
+
+int main()
+{
+    int n = 9;
+    int arr[n];
+    
+    for(int i = 0; i<n; i++)
+        arr[i] = i+1;
+    
+	node* root = BST(arr, 0, n-1);
+	Inorder(root);
+    return 0;
+}
