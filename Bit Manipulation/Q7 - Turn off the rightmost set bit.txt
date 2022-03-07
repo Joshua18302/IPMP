@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int a = 7;
+	int i;
+	for(i=0; i<32; i++)  
+	{
+		int temp = a & (1<<i);
+		if(temp)
+		    break;
+	}
+	cout<<"Initial number: "<<a;
+	a = a>>i+1;
+	a = a<<i+1;
+	cout<<"\nNew number: "<<a;
+	return 0;
+}

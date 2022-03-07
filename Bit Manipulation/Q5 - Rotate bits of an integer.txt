@@ -1,0 +1,24 @@
+#include<iostream>
+
+using namespace std;
+
+int leftRotate(int n, unsigned int d)
+{
+	return (n << d)|(n >> (32 - d));
+}
+
+int rightRotate(int n, unsigned int d)
+{
+	return (n >> d)|(n << (32 - d));
+}
+
+int main()
+{
+	int n = 16;
+	int d = 2;
+	cout<<"Left Rotation of "<<n<<" by "<<d<<" is ";
+	cout<<leftRotate(n, d);
+	cout<<"\nRight Rotation of "<<n<<" by "<<d<<" is ";
+	cout<<rightRotate(n, d);
+	return 0;
+}

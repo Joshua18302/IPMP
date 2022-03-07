@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int number = 200;
+	int count = 0;
+	int n = number;
+	while (n) 
+	{
+		count += n & 1;
+		n >>= 1;
+	}
+	
+	if(count==1)
+	    cout<<number<<" is a power of 2.";
+	else
+	    cout<<number<<" is not a power of 2.";
+	return 0;
+}
